@@ -3,28 +3,45 @@ import mysql.connector
 from mysql.connector import Error
 from functools import wraps
 from datetime import datetime
-from dotenv import load_dotenv  # Impor load_dotenv
-import os  # Impor os untuk akses ke variabel .env
+from dotenv import load_dotenv
+import os
+import logging
 
 # Memuat variabel dari file .env
 load_dotenv()
 
+# Inisialisasi aplikasi Flask
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Ganti dengan secret key yang aman
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "default_secret_key")  # Gunakan default yang aman
+
+# Konfigurasi logging
+logging.basicConfig(level=logging.INFO)  # Ganti INFO dengan DEBUG untuk debugging
+logger = logging.getLogger(__name__)
 
 # Koneksi ke database MySQL menggunakan konfigurasi dari .env
 def get_db_connection():
     try:
-        connection = mysql.connector.connect(
-            host=os.getenv("DB_HOST"),         # Ambil nilai DB_HOST dari .env
-            user=os.getenv("DB_USER"),         # Ambil nilai DB_USER dari .env
-            password=os.getenv("DB_PASSWORD"), # Ambil nilai DB_PASSWORD dari .env
-            database=os.getenv("DB_NAME"),     # Ambil nilai DB_NAME dari .env
-            port=os.getenv("DB_PORT", 3306)    # Ambil nilai DB_PORT dari .env (default ke 3306)
-        )
+        # Ambil konfigurasi dari .env
+        db_config = {
+            "host": os.getenv("DB_HOST", "localhost"),
+            "user": os.getenv("DB_USER", "root"),
+            "password": os.getenv("DB_PASSWORD", ""),
+            "database": os.getenv("DB_NAME", "test_db"),
+            "port": int(os.getenv("DB_PORT", 3306)),  # Konversi ke integer
+        }
+
+        # Validasi konfigurasi kritis
+        if not db_config["host"] or not db_config["user"] or not db_config["database"]:
+            logger.error("Konfigurasi database tidak lengkap. Harap periksa file .env.")
+            return None
+
+        # Membuka koneksi
+        connection = mysql.connector.connect(**db_config)
+        logger.info("Koneksi ke database berhasil.")
         return connection
+
     except Error as e:
-        print(f"Error: {e}")
+        logger.error(f"Kesalahan saat menghubungkan ke database: {e}")
         return None
     
 @app.route('/check_db')

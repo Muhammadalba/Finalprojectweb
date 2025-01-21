@@ -1,12 +1,38 @@
-# Ignore .env file which contains sensitive data like DB passwords
-.env
-
-# Ignore virtual environment folder (venv)
+# Virtual environment
 venv/
+env/
+.venv/
 
-# Ignore Python bytecode files
+# IDE/editor files
+.vscode/
+.idea/
+
+# Python bytecode
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
-# Ignore IDE-specific files (e.g., VS Code, JetBrains)
-.vscode/
+# Local configuration files
+*.env
+*.flaskenv
+
+# Logs and database files
+*.log
+*.sqlite
+*.db
+
+# Package distribution
+*.tar.gz
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Dependencies (excluding from GitHub, should be in requirements.txt)
+Pipfile.lock
+venv/
+env/
+
+# Vercel or cloud provider specific (optional, but to prevent unnecessary files)
+.vercel/
