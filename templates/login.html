@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Manajemen Tugas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='images/bg2.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(46, 46, 46, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 420px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: #29df3f; /* Hijau cerah */
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        .form-group input {
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #29df3f;
+            background-color: rgba(51, 51, 51, 0.9);
+            box-shadow: 0 0 5px rgba(41, 223, 63, 0.3);
+        }
+
+        .form-group label {
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .form-group .form-control {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: white;
+            border: 1px solid rgba(41, 223, 63, 0.3);
+        }
+
+        .btn-success {
+            background-color: #29df3f;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .btn-success:active {
+            background-color: #1a8f3f;
+            transform: translateY(1px);
+        }
+
+        .alert {
+            font-size: 1.1rem;
+            color: rgb(0, 0, 0);
+            margin-top: 15px;
+        }
+
+        .alert .btn-close {
+            background-color: transparent;
+            border: none;
+        }
+
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link-container a {
+            color: #29df3f;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-password {
+            font-size: 0.9rem;
+            color: white;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .forgot-password a {
+            color: #f39c12;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h1>Login</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="username" class="text-white">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required placeholder="Masukkan username Anda">
+            </div>
+            <div class="form-group">
+                <label for="password" class="text-white">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required placeholder="Masukkan password Anda">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success w-100">Login</button>
+            </div>
+        </form>
+
+        <div class="forgot-password">
+            <p>Forgot your password? <a href="#">Reset it here</a></p>
+        </div>
+
+        <div class="link-container">
+            <p>Don't have an account? <a href="#">Register now</a></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

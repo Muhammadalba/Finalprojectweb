@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Kegiatan - Manajemen Tugas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='images/bg2.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            padding: 20px 0;
+        }
+        .container {
+            background: rgba(46, 46, 46, 0.85);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-top: 50px;
+            max-width: 600px;
+        }
+        h1 {
+            color: #29df3f;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+        .form-label {
+            color: #29df3f;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .form-control {
+            background-color: rgba(51, 51, 51, 0.9);
+            color: white;
+            border: 1px solid rgba(41, 223, 63, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            background-color: rgba(68, 68, 68, 0.9);
+            border-color: #29df3f;
+            box-shadow: 0 0 0 0.25rem rgba(41, 223, 63, 0.25);
+            color: white;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .btn-primary {
+            background-color: #29df3f;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        .alert {
+            margin-bottom: 20px;
+        }
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        .form-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+        input[type="date"] {
+            color-scheme: dark;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h1>Edit Kegiatan</h1>
+
+        <form method="POST" action="{{ url_for('edit_activity', activity_id=activity.id) }}">
+            <div class="mb-3">
+                <label for="kegiatan" class="form-label required-field">Kegiatan</label>
+                <input type="text" 
+                       class="form-control" 
+                       id="kegiatan" 
+                       name="kegiatan" 
+                       placeholder="Masukkan nama kegiatan"
+                       required
+                       value="{{ activity.kegiatan }}">
+                <div class="form-text">Masukkan nama kegiatan yang ingin diedit</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="jenis_kegiatan" class="form-label required-field">Jenis Kegiatan</label>
+                <input type="text" 
+                       class="form-control" 
+                       id="jenis_kegiatan" 
+                       name="jenis_kegiatan" 
+                       placeholder="Masukkan jenis kegiatan"
+                       required
+                       value="{{ activity.jenis_kegiatan }}">
+                <div class="form-text">Masukkan jenis kegiatan (misalnya: Kuliah, Praktikum, dll.)</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="deadline" class="form-label required-field">Deadline</label>
+                <input type="date" 
+                       class="form-control" 
+                       id="deadline" 
+                       name="deadline" 
+                       required
+                       value="{{ activity.deadline }}">
+                <div class="form-text">Tentukan batas waktu kegiatan</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        // Set minimum date as today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('deadline').setAttribute('min', today);
+    </script>
+</body>
+</html>
